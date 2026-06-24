@@ -1,40 +1,56 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de senha</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerador de Senhas</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
-
 <body>
-    <section class="conteudo">
-        <div class="conteudo-titulo">
-            <img src="unlock.svg" alt="cadeado fechado">
-            <h2 class="titulo-principal">Gerador de senhas</h2>
-            <h3 class="titulo-secundario">Gere instantaneamente uma senha aleatória e segura</h3>
-        </div>
-        <div class="conteudo-senha">
-            <label for="senha">Senha</label>
-            <input name="senha" type="text" id="campo-senha">
-        </div>
-        <div class="parametro">
-            <h3 class="parametro-titulo">Personalize sua senha</h3>
-            <div class="parametro-coluna__senha">
-                <div class="parametro-senha">
-                    <h4 class="parametro-senha__titulo">Número de caracteres</h4>
-                </div>                
-                <div class="parametro-senha">
-                    <h4 class="parametro-senha__titulo">Características da senha</h4>
-                </div>
-                <div class="parametro-senha">
-                    <h4 class="parametro-senha__titulo">Força da senha</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-</body>
 
+  <div class="container">
+
+    <div class="card">
+
+      <div class="header">
+        <img src="unlock.svg" alt="Ícone" class="icon">
+        <h1>Gerador de Senhas</h1>
+      </div>
+
+      <div class="password-box">
+        <span id="password">Clique em gerar</span>
+      </div>
+
+      <div class="strength">
+        <div class="bar-bg">
+          <div id="bar-fill"></div>
+        </div>
+        <span id="strength-text">Força da senha</span>
+      </div>
+
+      <div class="controls">
+
+        <div class="length-control">
+          <button id="decrease">-</button>
+          <input type="number" id="length" min="8" max="32" value="12"/>
+          <button id="increase">+</button>
+        </div>
+
+        <div class="options">
+          <label><input type="checkbox" id="uppercase" checked> Maiúsculas</label>
+          <label><input type="checkbox" id="lowercase" checked> Minúsculas</label>
+          <label><input type="checkbox" id="numbers" checked> Números</label>
+          <label><input type="checkbox" id="symbols" checked> Símbolos</label>
+        </div>
+
+        <button id="generate">Gerar Senha</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
