@@ -1,56 +1,201 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gerador de Senhas</title>
-  <link rel="stylesheet" href="style.css"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON VAULT • Gerador de Senhas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="unlock.svg" type="image/svg+xml">
 </head>
 <body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <img src="unlock.svg" alt="Cadeado" class="lock-icon">
+                <h1>NEON VAULT</h1>
+            </div>
+            <p class="subtitle">Gerador de Senhas Seguras • Alta Entropia</p>
+        </header>
 
-  <div class="container">
-
-    <div class="card">
-
-      <div class="header">
-        <img src="unlock.svg" alt="Ícone" class="icon">
-        <h1>Gerador de Senhas</h1>
-      </div>
-
-      <div class="password-box">
-        <span id="password">Clique em gerar</span>
-      </div>
-
-      <div class="strength">
-        <div class="bar-bg">
-          <div id="bar-fill"></div>
-        </div>
-        <span id="strength-text">Força da senha</span>
-      </div>
-
-      <div class="controls">
-
-        <div class="length-control">
-          <button id="decrease">-</button>
-          <input type="number" id="length" min="8" max="32" value="12"/>
-          <button id="increase">+</button>
+        <!-- Password Display -->
+        <div class="password-card">
+            <div class="password-display" id="passwordDisplay">Clique em Gerar Senha</div>
+            <button class="copy-btn" id="copyBtn" title="Copiar">
+                📋
+            </button>
         </div>
 
-        <div class="options">
-          <label><input type="checkbox" id="uppercase" checked> Maiúsculas</label>
-          <label><input type="checkbox" id="lowercase" checked> Minúsculas</label>
-          <label><input type="checkbox" id="numbers" checked> Números</label>
-          <label><input type="checkbox" id="symbols" checked> Símbolos</label>
+        <!-- Strength Bar -->
+        <div class="strength-container">
+            <div class="strength-label">Força da Senha</div>
+            <div class="strength-bar">
+                <div class="strength-fill" id="strengthFill"></div>
+            </div>
+            <div class="strength-text" id="strengthText">—</div>
         </div>
 
-        <button id="generate">Gerar Senha</button>
+        <!-- Controls -->
+        <div class="controls">
+            <div class="slider-group">
+                <label for="length">Comprimento: <span id="lengthValue">16</span></label>
+                <input type="range" id="length" min="8" max="32" value="16">
+            </div>
 
-      </div>
+            <div class="checkboxes">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="uppercase" checked>
+                    <span>Aa Maiúsculas</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="lowercase" checked>
+                    <span>aa Minúsculas</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="numbers" checked>
+                    <span>123 Números</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="symbols" checked>
+                    <span>!@# Símbolos</span>
+                </label>
+            </div>
+        </div>
 
+        <!-- Generate Button -->
+        <button class="generate-btn" id="generateBtn">
+            GERAR SENHA SEGURA
+        </button>
+
+        <!-- Footer Info -->
+        <footer>
+            <p>Senhas geradas com alta aleatoriedade • Nunca reutilize senhas</p>
+        </footer>
     </div>
 
-  </div>
+    <script>
+        // Character sets
+        const chars = {
+            lowercase: 'abcdefghijklmnopqrstuvwxyz',
+            uppercase: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            numbers: '0123456789',
+            symbols: '!@#$%^&*()_+-=[]{}|;:,.<>/?'
+        };
 
-  <script src="script.js"></script>
+        // Forbidden patterns
+        const forbidden = [
+            '123', '234', '345', 'abc', 'bcd', 'qwe', 'qwert', 'password', 'admin',
+            'letmein', 'welcome', '123456', 'abcdef'
+        ];
+
+        function generatePassword(length, useUpper, useLower, useNum, useSym) {
+            let pool = '';
+            if (useLower) pool += chars.lowercase;
+            if (useUpper) pool += chars.uppercase;
+            if (useNum) pool += chars.numbers;
+            if (useSym) pool += chars.symbols;
+
+            if (pool === '') pool = chars.lowercase + chars.uppercase;
+
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += pool[Math.floor(Math.random() * pool.length)];
+            }
+
+            // Ensure at least one of each selected type
+            let finalPassword = password.split('');
+            
+            if (useUpper && !/[A-Z]/.test(password)) {
+                finalPassword[Math.floor(Math.random() * length)] = chars.uppercase[Math.floor(Math.random() * chars.uppercase.length)];
+            }
+            if (useLower && !/[a-z]/.test(password)) {
+                finalPassword[Math.floor(Math.random() * length)] = chars.lowercase[Math.floor(Math.random() * chars.lowercase.length)];
+            }
+            if (useNum && !/\d/.test(password)) {
+                finalPassword[Math.floor(Math.random() * length)] = chars.numbers[Math.floor(Math.random() * chars.numbers.length)];
+            }
+            if (useSym && !/[!@#$%^&*()_+\-=\[\]{}|;:,.<>/?]/.test(password)) {
+                finalPassword[Math.floor(Math.random() * length)] = chars.symbols[Math.floor(Math.random() * chars.symbols.length)];
+            }
+
+            password = finalPassword.join('');
+
+            // Check for forbidden patterns
+            const lowerPass = password.toLowerCase();
+            if (forbidden.some(word => lowerPass.includes(word))) {
+                return generatePassword(length, useUpper, useLower, useNum, useSym); // retry
+            }
+
+            return password;
+        }
+
+        function calculateStrength(password) {
+            let score = 0;
+            if (password.length >= 8) score++;
+            if (password.length >= 12) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/[a-z]/.test(password)) score++;
+            if (/\d/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+
+            if (score <= 3) return { level: 'weak', text: 'FRACA', color: '#ff3366' };
+            if (score <= 5) return { level: 'medium', text: 'MÉDIA', color: '#ffcc33' };
+            return { level: 'strong', text: 'FORTE', color: '#33ff99' };
+        }
+
+        // DOM Elements
+        const passwordDisplay = document.getElementById('passwordDisplay');
+        const generateBtn = document.getElementById('generateBtn');
+        const copyBtn = document.getElementById('copyBtn');
+        const lengthSlider = document.getElementById('length');
+        const lengthValue = document.getElementById('lengthValue');
+        const strengthFill = document.getElementById('strengthFill');
+        const strengthText = document.getElementById('strengthText');
+
+        // Update length display
+        lengthSlider.addEventListener('input', () => {
+            lengthValue.textContent = lengthSlider.value;
+        });
+
+        // Generate password
+        function generateAndDisplay() {
+            const length = parseInt(lengthSlider.value);
+            const useUpper = document.getElementById('uppercase').checked;
+            const useLower = document.getElementById('lowercase').checked;
+            const useNum = document.getElementById('numbers').checked;
+            const useSym = document.getElementById('symbols').checked;
+
+            const password = generatePassword(length, useUpper, useLower, useNum, useSym);
+            passwordDisplay.textContent = password;
+
+            const strength = calculateStrength(password);
+            
+            strengthFill.style.width = `${(strength.level === 'weak' ? 33 : strength.level === 'medium' ? 66 : 100)}%`;
+            strengthFill.style.backgroundColor = strength.color;
+            strengthText.textContent = strength.text;
+            strengthText.style.color = strength.color;
+        }
+
+        generateBtn.addEventListener('click', generateAndDisplay);
+
+        // Copy to clipboard
+        copyBtn.addEventListener('click', () => {
+            const password = passwordDisplay.textContent;
+            if (password && password !== 'Clique em Gerar Senha') {
+                navigator.clipboard.writeText(password).then(() => {
+                    const original = copyBtn.textContent;
+                    copyBtn.textContent = '✅';
+                    setTimeout(() => copyBtn.textContent = original, 1500);
+                });
+            }
+        });
+
+        // Initial generation
+        window.onload = () => {
+            generateAndDisplay();
+        };
+    </script>
+</body>
+</html>
 </body>
 </html>
