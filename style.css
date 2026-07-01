@@ -1,84 +1,247 @@
+/* style.css */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap'); /* fallback, but we'll force Times */
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Times New Roman", serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background: linear-gradient(135deg, #0a0f1c, #111a2e);
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #e6e6e6;
+    font-family: 'Times New Roman', Times, serif;
+    background: linear-gradient(135deg, #1a0033 0%, #3a0a4a 40%, #6B46C0 80%, #9F2A6B 100%);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
-.card {
-  background: #121c33;
-  padding: 30px;
-  border-radius: 16px;
-  width: 380px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255, 0, 170, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(192, 38, 211, 0.15) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+.container {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(15, 5, 35, 0.85);
+    border: 2px solid rgba(255, 0, 170, 0.4);
+    border-radius: 20px;
+    padding: 40px 35px;
+    box-shadow: 0 0 60px rgba(255, 0, 170, 0.5),
+                inset 0 0 40px rgba(107, 70, 192, 0.2);
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(12px);
 }
 
-.icon { width: 32px; }
-
-.password-box {
-  background: rgba(255,255,255,0.05);
-  padding: 15px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 18px;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
-  box-shadow: 0 0 15px rgba(0,120,255,0.15);
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 8px;
 }
 
-/* 🔥 BARRA REAL (SEM ::after) */
-.bar-bg {
-  width: 100%;
-  height: 10px;
-  background: #2a3550;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 5px;
+.lock-icon {
+    width: 52px;
+    height: 52px;
+    filter: drop-shadow(0 0 12px #FF00AA);
 }
 
-#bar-fill {
-  height: 100%;
-  width: 0%;
-  background: red;
-  transition: 0.3s ease;
+h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, #FF00AA, #C026D3, #6B46C0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 30px rgba(255, 0, 170, 0.6);
 }
 
-#strength-text {
-  font-size: 12px;
-  color: #aaa;
+.subtitle {
+    text-align: center;
+    font-size: 1.05rem;
+    opacity: 0.85;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
 }
 
-.length-control {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
+.password-card {
+    position: relative;
+    margin-bottom: 25px;
 }
 
-button {
-  cursor: pointer;
+.password-display {
+    background: rgba(10, 5, 25, 0.9);
+    border: 2px solid #FF00AA;
+    border-radius: 12px;
+    padding: 22px 20px;
+    font-size: 1.65rem;
+    font-family: monospace;
+    letter-spacing: 3px;
+    text-align: center;
+    min-height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    word-break: break-all;
+    box-shadow: 0 0 25px rgba(255, 0, 170, 0.6);
+    transition: all 0.3s ease;
 }
 
-#generate {
-  background: #2d6cdf;
-  border: none;
-  padding: 10px;
-  color: white;
-  border-radius: 8px;
+.copy-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(255, 0, 170, 0.4);
+}
+
+.copy-btn:hover {
+    background: #FF00AA;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 0 25px #FF00AA;
+}
+
+.strength-container {
+    margin: 25px 0;
+}
+
+.strength-label {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+.strength-bar {
+    height: 14px;
+    background: #1f0a2e;
+    border-radius: 30px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 0, 170, 0.3);
+}
+
+.strength-fill {
+    height: 100%;
+    width: 33%;
+    background: linear-gradient(90deg, #ff3366, #ffcc33);
+    transition: all 0.4s ease;
+    box-shadow: 0 0 12px currentColor;
+}
+
+.strength-text {
+    text-align: right;
+    font-weight: bold;
+    margin-top: 6px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+}
+
+.controls {
+    background: rgba(20, 10, 40, 0.6);
+    padding: 25px;
+    border-radius: 16px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(192, 38, 211, 0.3);
+}
+
+.slider-group {
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: #FF00AA;
+}
+
+.checkboxes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.checkbox-label:hover {
+    color: #FF00AA;
+}
+
+.generate-btn {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.35rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #9F2A6B, #FF00AA, #C026D3);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.4s ease;
+    box-shadow: 0 0 30px rgba(255, 0, 170, 0.7);
+    position: relative;
+    overflow: hidden;
+}
+
+.generate-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 45px rgba(255, 0, 170, 0.9);
+    background: linear-gradient(90deg, #C026D3, #FF00AA, #6B46C0);
+}
+
+.generate-btn:active {
+    transform: scale(0.98);
+}
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        margin: 15px;
+        padding: 30px 20px;
+    }
+    
+    h1 {
+        font-size: 2.3rem;
+    }
+}
 }
